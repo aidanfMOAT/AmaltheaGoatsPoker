@@ -48,6 +48,12 @@ body {
   gap: 14px;
 }
 
+.site-logo-img {
+  height: 44px;
+  width: auto;
+  object-fit: contain;
+}
+
 .logo-title {
   font-size: 19px;
   font-weight: 800;
@@ -421,6 +427,22 @@ select:focus { border-color: rgba(247,201,72,0.6); }
   border-top: 1px solid rgba(247,201,72,0.12);
 }
 
+/* ── Table player logo ───────────────────────────── */
+.player-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.table-player-logo {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(247,201,72,0.3);
+  flex-shrink: 0;
+}
+
 /* ── Player list ─────────────────────────────────── */
 .player-list { list-style: none; }
 
@@ -461,6 +483,67 @@ select:focus { border-color: rgba(247,201,72,0.6); }
 }
 
 .alias-edit-input::placeholder { color: rgba(247,201,72,0.3) !important; }
+
+/* ── Player logo upload ───────────────────────────── */
+.logo-upload-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px dashed rgba(247,201,72,0.35);
+  cursor: pointer;
+  flex-shrink: 0;
+  overflow: hidden;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.logo-upload-btn:hover {
+  border-color: rgba(247,201,72,0.7);
+  background: rgba(247,201,72,0.05);
+}
+
+.logo-upload-placeholder {
+  font-size: 11px;
+  color: rgba(247,201,72,0.5);
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.logo-upload-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.player-logo-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px dashed rgba(247,201,72,0.3);
+  cursor: pointer;
+  flex-shrink: 0;
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+
+.player-logo-slot:hover { border-color: rgba(247,201,72,0.7); }
+
+.player-logo-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.player-logo-empty {
+  font-size: 16px;
+  color: rgba(247,201,72,0.25);
+  line-height: 1;
+}
 
 /* ── Game night form ─────────────────────────────── */
 .game-block {

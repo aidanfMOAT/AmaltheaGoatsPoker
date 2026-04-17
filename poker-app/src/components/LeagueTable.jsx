@@ -8,9 +8,10 @@ function fmt(n) {
   return n < 0 ? `-£${Math.abs(n)}` : `£${n}`;
 }
 
-function PlayerCell({ name, alias }) {
+function PlayerCell({ name, alias, logo }) {
   return (
-    <td>
+    <td className="player-cell">
+      {logo && <img src={logo} alt="" className="table-player-logo" />}
       {alias && <span className="alias-badge">{alias}</span>}
       {name}
     </td>
@@ -61,7 +62,7 @@ export default function LeagueTable({ players, gameNights }) {
                     {ordinal(i + 1)}
                   </span>
                 </td>
-                <PlayerCell name={r.name} alias={r.alias} />
+                <PlayerCell name={r.name} alias={r.alias} logo={r.logo} />
                 <td><strong className="winnings">£{r.totalWon}</strong></td>
                 <td>{r.nightsPlayed}</td>
                 <td>{r.gamesPlayed}</td>
@@ -88,7 +89,7 @@ export default function LeagueTable({ players, gameNights }) {
             {hustlerTable.map((r, i) => (
               <tr key={r.id} className={r.net > 0 ? 'row-profit' : r.net < 0 ? 'row-loss' : ''}>
                 <td><span className="pos-plain">{ordinal(i + 1)}</span></td>
-                <PlayerCell name={r.name} alias={r.alias} />
+                <PlayerCell name={r.name} alias={r.alias} logo={r.logo} />
                 <td>£{r.totalIn}</td>
                 <td>£{r.totalWon}</td>
                 <td><strong>{fmt(r.net)}</strong></td>
@@ -114,7 +115,7 @@ export default function LeagueTable({ players, gameNights }) {
             {ratioTable.map((r, i) => (
               <tr key={r.id} className={r.ratio > 1 ? 'row-profit' : r.ratio < 1 ? 'row-loss' : ''}>
                 <td><span className="pos-plain">{ordinal(i + 1)}</span></td>
-                <PlayerCell name={r.name} alias={r.alias} />
+                <PlayerCell name={r.name} alias={r.alias} logo={r.logo} />
                 <td>£{r.totalIn}</td>
                 <td>£{r.totalWon}</td>
                 <td><strong>{r.ratio.toFixed(2)}x</strong></td>
