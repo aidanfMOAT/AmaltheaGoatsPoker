@@ -4,6 +4,7 @@ import PlayerManager from './components/PlayerManager';
 import LeagueTable from './components/LeagueTable';
 import GameNightList from './components/GameNightList';
 import GameNightForm from './components/GameNightForm';
+import GoatLogo from './components/GoatLogo';
 import './App.css';
 
 export default function App() {
@@ -15,12 +16,16 @@ export default function App() {
     saveData(newData);
   }
 
-  function addPlayer(name) {
-    update({ ...data, players: [...data.players, { id: generateId(), name }] });
+  function addPlayer(name, alias) {
+    update({ ...data, players: [...data.players, { id: generateId(), name, alias: alias || '' }] });
   }
 
   function removePlayer(id) {
     update({ ...data, players: data.players.filter(p => p.id !== id) });
+  }
+
+  function updatePlayerAlias(id, alias) {
+    update({ ...data, players: data.players.map(p => p.id === id ? { ...p, alias } : p) });
   }
 
   function saveGameNight(night) {
@@ -38,7 +43,7 @@ export default function App() {
       <header className="app-header">
         <div className="header-inner">
           <div className="logo">
-            <span className="logo-icon">&#127760;</span>
+            <GoatLogo size={44} />
             <div>
               <div className="logo-title">Amalthea Trophy</div>
               <div className="logo-sub">Golden Goats Poker League</div>
@@ -69,6 +74,7 @@ export default function App() {
             players={data.players}
             onAdd={addPlayer}
             onRemove={removePlayer}
+            onUpdateAlias={updatePlayerAlias}
           />
         )}
         {view === 'new-night' && (

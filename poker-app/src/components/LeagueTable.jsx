@@ -1,4 +1,5 @@
 import { calcLeagueTable } from '../utils/calculations';
+import GoatLogo from './GoatLogo';
 
 const ordinal = n => ['', '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th',
   '11th', '12th', '13th', '14th', '15th', '16th'][n] || `${n}th`;
@@ -6,6 +7,17 @@ const ordinal = n => ['', '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th'
 function fmt(n) {
   return n < 0 ? `-£${Math.abs(n)}` : `£${n}`;
 }
+
+function PlayerCell({ name, alias }) {
+  return (
+    <td>
+      {alias && <span className="alias-badge">{alias}</span>}
+      {name}
+    </td>
+  );
+}
+
+const MEDALS = { 0: 'medal-gold', 1: 'medal-silver', 2: 'medal-bronze' };
 
 export default function LeagueTable({ players, gameNights }) {
   const rows = calcLeagueTable(players, gameNights);
@@ -16,7 +28,10 @@ export default function LeagueTable({ players, gameNights }) {
 
   if (rows.length === 0) {
     return (
-      <div className="card">
+      <div className="card league-empty">
+        <div className="league-empty-logo">
+          <GoatLogo size={80} opacity={0.25} />
+        </div>
         <h2>League Table</h2>
         <p className="empty-msg">No results recorded yet. Add a game night to get started.</p>
       </div>
@@ -40,10 +55,14 @@ export default function LeagueTable({ players, gameNights }) {
           </thead>
           <tbody>
             {totalPrizeTable.map((r, i) => (
-              <tr key={r.id} className={i === 0 ? 'row-gold' : i === 1 ? 'row-silver' : i === 2 ? 'row-bronze' : ''}>
-                <td>{ordinal(i + 1)}</td>
-                <td>{r.name}</td>
-                <td><strong>£{r.totalWon}</strong></td>
+              <tr key={r.id} className={i < 3 ? `row-top row-${['gold','silver','bronze'][i]}` : ''}>
+                <td>
+                  <span className={i < 3 ? `pos-medal ${MEDALS[i]}` : 'pos-plain'}>
+                    {ordinal(i + 1)}
+                  </span>
+                </td>
+                <PlayerCell name={r.name} alias={r.alias} />
+                <td><strong className="winnings">£{r.totalWon}</strong></td>
                 <td>{r.nightsPlayed}</td>
                 <td>{r.gamesPlayed}</td>
                 <td>{r.wins}</td>
@@ -54,7 +73,7 @@ export default function LeagueTable({ players, gameNights }) {
       </div>
 
       <div className="card">
-        <h2>Hustler or Hustled — Net Profit/Loss</h2>
+        <h2>Hustler or Hustled — Net Profit / Loss</h2>
         <table>
           <thead>
             <tr>
@@ -68,8 +87,8 @@ export default function LeagueTable({ players, gameNights }) {
           <tbody>
             {hustlerTable.map((r, i) => (
               <tr key={r.id} className={r.net > 0 ? 'row-profit' : r.net < 0 ? 'row-loss' : ''}>
-                <td>{ordinal(i + 1)}</td>
-                <td>{r.name}</td>
+                <td><span className="pos-plain">{ordinal(i + 1)}</span></td>
+                <PlayerCell name={r.name} alias={r.alias} />
                 <td>£{r.totalIn}</td>
                 <td>£{r.totalWon}</td>
                 <td><strong>{fmt(r.net)}</strong></td>
@@ -94,8 +113,8 @@ export default function LeagueTable({ players, gameNights }) {
           <tbody>
             {ratioTable.map((r, i) => (
               <tr key={r.id} className={r.ratio > 1 ? 'row-profit' : r.ratio < 1 ? 'row-loss' : ''}>
-                <td>{ordinal(i + 1)}</td>
-                <td>{r.name}</td>
+                <td><span className="pos-plain">{ordinal(i + 1)}</span></td>
+                <PlayerCell name={r.name} alias={r.alias} />
                 <td>£{r.totalIn}</td>
                 <td>£{r.totalWon}</td>
                 <td><strong>{r.ratio.toFixed(2)}x</strong></td>
