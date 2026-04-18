@@ -443,6 +443,53 @@ select:focus { border-color: rgba(247,201,72,0.6); }
   flex-shrink: 0;
 }
 
+.table-player-logo-clickable {
+  cursor: zoom-in;
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.table-player-logo-clickable:hover {
+  border-color: rgba(247,201,72,0.8);
+  transform: scale(1.15);
+}
+
+/* ── Logo lightbox ───────────────────────────────── */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  cursor: zoom-out;
+}
+
+.lightbox-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  cursor: default;
+}
+
+.lightbox-img {
+  max-width: min(420px, 90vw);
+  max-height: 80vh;
+  border-radius: 14px;
+  border: 2px solid rgba(247,201,72,0.35);
+  box-shadow: 0 12px 60px rgba(0,0,0,0.7);
+  object-fit: contain;
+}
+
+.lightbox-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fde68a;
+  letter-spacing: 0.02em;
+}
+
 /* ── Player list ─────────────────────────────────── */
 .player-list { list-style: none; }
 
