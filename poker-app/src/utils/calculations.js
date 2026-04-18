@@ -6,6 +6,7 @@ export function calcLeagueTable(players, gameNights) {
       id: p.id,
       name: p.name,
       alias: p.alias || '',
+      logo: p.logo || '',
       totalWon: 0,
       totalIn: 0,
       gamesPlayed: 0,

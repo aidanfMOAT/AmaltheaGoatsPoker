@@ -11,9 +11,12 @@ function defaultGame(index) {
   };
 }
 
-export default function GameNightForm({ players, onSave, onCancel }) {
-  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
-  const [games, setGames] = useState([defaultGame(0)]);
+export default function GameNightForm({ players, onSave, onCancel, initialNight }) {
+  const [date, setDate] = useState(initialNight ? initialNight.date : new Date().toISOString().slice(0, 10));
+  const [games, setGames] = useState(initialNight ? initialNight.games.map(g => ({
+    ...g,
+    prizes: { 1: g.prizes[1] ?? '', 2: g.prizes[2] ?? '', 3: g.prizes[3] ?? '' },
+  })) : [defaultGame(0)]);
 
   function addGame() {
     setGames(g => [...g, defaultGame(g.length)]);
@@ -74,14 +77,14 @@ export default function GameNightForm({ players, onSave, onCancel }) {
       return;
     }
 
-    onSave({ id: generateId(), date, games: cleanGames });
+    onSave({ id: initialNight ? initialNight.id : generateId(), date, games: cleanGames });
   }
 
   const positionLabel = { 1: '1st', 2: '2nd', 3: '3rd' };
 
   return (
     <div className="card">
-      <h2>New Game Night</h2>
+      <h2>{initialNight ? 'Edit Game Night' : 'New Game Night'}</h2>
       <div className="field-row">
         <label>Date</label>
         <input type="date" value={date} onChange={e => setDate(e.target.value)} />

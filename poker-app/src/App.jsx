@@ -4,7 +4,7 @@ import PlayerManager from './components/PlayerManager';
 import LeagueTable from './components/LeagueTable';
 import GameNightList from './components/GameNightList';
 import GameNightForm from './components/GameNightForm';
-import GoatLogo from './components/GoatLogo';
+import goldenGoatLogo from './assets/GoldenGoatGrey.png';
 import './App.css';
 
 export default function App() {
@@ -16,8 +16,8 @@ export default function App() {
     saveData(newData);
   }
 
-  function addPlayer(name, alias) {
-    update({ ...data, players: [...data.players, { id: generateId(), name, alias: alias || '' }] });
+  function addPlayer(name, alias, logo) {
+    update({ ...data, players: [...data.players, { id: generateId(), name, alias: alias || '', logo: logo || '' }] });
   }
 
   function removePlayer(id) {
@@ -28,9 +28,26 @@ export default function App() {
     update({ ...data, players: data.players.map(p => p.id === id ? { ...p, alias } : p) });
   }
 
+  function updatePlayerLogo(id, logo) {
+    update({ ...data, players: data.players.map(p => p.id === id ? { ...p, logo } : p) });
+  }
+
+  const [editingNightId, setEditingNightId] = useState(null);
+
   function saveGameNight(night) {
     update({ ...data, gameNights: [...data.gameNights, night] });
     setView('nights');
+  }
+
+  function editGameNight(updatedNight) {
+    update({ ...data, gameNights: data.gameNights.map(n => n.id === updatedNight.id ? updatedNight : n) });
+    setEditingNightId(null);
+    setView('nights');
+  }
+
+  function startEditNight(id) {
+    setEditingNightId(id);
+    setView('edit-night');
   }
 
   function deleteGameNight(id) {
@@ -43,7 +60,7 @@ export default function App() {
       <header className="app-header">
         <div className="header-inner">
           <div className="logo">
-            <GoatLogo size={44} />
+            <img src={goldenGoatLogo} alt="Golden Goat" className="site-logo-img" />
             <div>
               <div className="logo-title">Amalthea Trophy</div>
               <div className="logo-sub">Golden Goats Poker League</div>
@@ -67,6 +84,15 @@ export default function App() {
             players={data.players}
             onAdd={() => setView('new-night')}
             onDelete={deleteGameNight}
+            onEdit={startEditNight}
+          />
+        )}
+        {view === 'edit-night' && editingNightId && (
+          <GameNightForm
+            players={data.players}
+            onSave={editGameNight}
+            onCancel={() => { setEditingNightId(null); setView('nights'); }}
+            initialNight={data.gameNights.find(n => n.id === editingNightId)}
           />
         )}
         {view === 'players' && (
@@ -75,6 +101,7 @@ export default function App() {
             onAdd={addPlayer}
             onRemove={removePlayer}
             onUpdateAlias={updatePlayerAlias}
+            onUpdateLogo={updatePlayerLogo}
           />
         )}
         {view === 'new-night' && (
