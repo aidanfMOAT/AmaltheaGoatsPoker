@@ -31,6 +31,7 @@ export default function PlayerManager({ players, onAdd, onRemove, onUpdateAlias,
   const [showPrompt, setShowPrompt] = useState(false);
   const [pwInput, setPwInput] = useState('');
   const [pwError, setPwError] = useState(false);
+  const [lightbox, setLightbox] = useState(null);
   const addLogoRef = useRef(null);
 
   async function handleLogoFile(file, callback) {
@@ -133,11 +134,12 @@ export default function PlayerManager({ players, onAdd, onRemove, onUpdateAlias,
           <li key={p.id}>
             <label
               className="player-logo-slot"
-              title={isUnlocked ? 'Click to change logo' : ''}
-              style={!isUnlocked ? { pointerEvents: 'none' } : {}}
+              title={isUnlocked ? 'Click to change logo' : (p.logo ? 'Click to view logo' : '')}
+              style={!isUnlocked && !p.logo ? { pointerEvents: 'none' } : {}}
+              onClick={!isUnlocked && p.logo ? () => setLightbox({ src: p.logo, name: p.name }) : undefined}
             >
               {p.logo
-                ? <img src={p.logo} alt="logo" className="player-logo-thumb" />
+                ? <img src={p.logo} alt="logo" className={`player-logo-thumb${!isUnlocked ? ' player-logo-thumb-clickable' : ''}`} />
                 : <span className="player-logo-empty">?</span>}
               {isUnlocked && (
                 <input
@@ -168,6 +170,15 @@ export default function PlayerManager({ players, onAdd, onRemove, onUpdateAlias,
           </li>
         ))}
       </ul>
+
+      {lightbox && (
+        <div className="lightbox-overlay" onClick={() => setLightbox(null)}>
+          <div className="lightbox-inner" onClick={e => e.stopPropagation()}>
+            <img src={lightbox.src} alt={lightbox.name} className="lightbox-img" />
+            <p className="lightbox-name">{lightbox.name}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
