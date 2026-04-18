@@ -8,7 +8,7 @@ function fmtDate(dateStr) {
   });
 }
 
-export default function GameNightList({ gameNights, players, onAdd, onDelete, onEdit }) {
+export default function GameNightList({ gameNights, players, onAdd, onDelete, onEdit, onViewBlog }) {
   const playerMap = Object.fromEntries(players.map(p => [p.id, p.name]));
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [showPrompt, setShowPrompt] = useState(false);
@@ -75,12 +75,23 @@ export default function GameNightList({ gameNights, players, onAdd, onDelete, on
         <div key={night.id} className="card night-card">
           <div className="night-header">
             <h3>{fmtDate(night.date)}</h3>
-            {isUnlocked && (
-              <div className="night-actions">
-                <button className="btn-ghost btn-edit-sm" onClick={() => onEdit(night.id)}>Edit</button>
-                <button className="btn-danger-sm" onClick={() => onDelete(night.id)}>Delete</button>
-              </div>
-            )}
+            <div className="night-actions">
+              {night.blogPost && (
+                <span className="blog-indicator" title="Has report">📝</span>
+              )}
+              <button
+                className={night.blogPost ? 'btn-report-sm has-post' : 'btn-report-sm'}
+                onClick={() => onViewBlog(night.id)}
+              >
+                {night.blogPost ? 'Read Report' : 'Write Report'}
+              </button>
+              {isUnlocked && (
+                <>
+                  <button className="btn-ghost btn-edit-sm" onClick={() => onEdit(night.id)}>Edit</button>
+                  <button className="btn-danger-sm" onClick={() => onDelete(night.id)}>Delete</button>
+                </>
+              )}
+            </div>
           </div>
           {night.games.map(game => {
             const winners = game.participants
