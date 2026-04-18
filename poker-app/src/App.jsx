@@ -4,6 +4,8 @@ import PlayerManager from './components/PlayerManager';
 import LeagueTable from './components/LeagueTable';
 import GameNightList from './components/GameNightList';
 import GameNightForm from './components/GameNightForm';
+import GameNightBlog from './components/GameNightBlog';
+import BlogList from './components/BlogList';
 import goldenGoatLogo from './assets/GoldenGoatGrey.png';
 import './App.css';
 
@@ -33,6 +35,8 @@ export default function App() {
   }
 
   const [editingNightId, setEditingNightId] = useState(null);
+  const [blogNightId, setBlogNightId] = useState(null);
+  const [blogBackView, setBlogBackView] = useState('nights');
 
   function saveGameNight(night) {
     update({ ...data, gameNights: [...data.gameNights, night] });
@@ -55,6 +59,18 @@ export default function App() {
     update({ ...data, gameNights: data.gameNights.filter(n => n.id !== id) });
   }
 
+  function viewNightBlog(nightId, fromView) {
+    setBlogNightId(nightId);
+    setBlogBackView(fromView);
+    setView('night-blog');
+  }
+
+  function saveBlogPost(nightId, post) {
+    update({ ...data, gameNights: data.gameNights.map(n => n.id === nightId ? { ...n, blogPost: post } : n) });
+  }
+
+  const blogActive = view === 'blog' || view === 'night-blog';
+
   return (
     <div className="app">
       <header className="app-header">
@@ -69,6 +85,7 @@ export default function App() {
           <nav className="nav">
             <button className={view === 'table' ? 'nav-btn active' : 'nav-btn'} onClick={() => setView('table')}>League Table</button>
             <button className={view === 'nights' ? 'nav-btn active' : 'nav-btn'} onClick={() => setView('nights')}>Game Nights</button>
+            <button className={blogActive ? 'nav-btn active' : 'nav-btn'} onClick={() => setView('blog')}>Blog</button>
             <button className={view === 'players' ? 'nav-btn active' : 'nav-btn'} onClick={() => setView('players')}>Players</button>
           </nav>
         </div>
@@ -85,6 +102,7 @@ export default function App() {
             onAdd={() => setView('new-night')}
             onDelete={deleteGameNight}
             onEdit={startEditNight}
+            onViewBlog={id => viewNightBlog(id, 'nights')}
           />
         )}
         {view === 'edit-night' && editingNightId && (
@@ -109,6 +127,20 @@ export default function App() {
             players={data.players}
             onSave={saveGameNight}
             onCancel={() => setView('nights')}
+          />
+        )}
+        {view === 'blog' && (
+          <BlogList
+            gameNights={data.gameNights}
+            onViewPost={id => viewNightBlog(id, 'blog')}
+          />
+        )}
+        {view === 'night-blog' && blogNightId && (
+          <GameNightBlog
+            night={data.gameNights.find(n => n.id === blogNightId)}
+            players={data.players}
+            onSave={saveBlogPost}
+            onBack={() => setView(blogBackView)}
           />
         )}
       </main>
