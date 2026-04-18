@@ -630,6 +630,90 @@ select:focus { border-color: rgba(247,201,72,0.6); }
   margin-bottom: 22px;
 }
 
+.list-header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.lock-btn {
+  font-size: 13px;
+  padding: 7px 13px;
+}
+
+.night-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-edit-sm {
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  color: #a5b4fc;
+  border-color: rgba(165,180,252,0.35);
+}
+
+.btn-edit-sm:hover {
+  color: #c7d2fe;
+  border-color: rgba(165,180,252,0.65);
+  background: rgba(165,180,252,0.07);
+}
+
+/* ── Password modal ──────────────────────────────── */
+.pw-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.pw-modal {
+  background: linear-gradient(135deg, #1c1840 0%, #100e28 100%);
+  border: 1px solid rgba(247,201,72,0.25);
+  border-radius: 14px;
+  padding: 28px 32px;
+  min-width: 300px;
+  box-shadow: 0 16px 60px rgba(0,0,0,0.6);
+}
+
+.pw-modal h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #fde68a, #f7c948);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.pw-input {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.pw-input-error {
+  border-color: rgba(248,113,113,0.6) !important;
+  box-shadow: 0 0 0 3px rgba(248,113,113,0.1) !important;
+}
+
+.pw-error {
+  font-size: 12px;
+  color: #f87171;
+  margin-bottom: 10px;
+}
+
+.pw-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
 .list-header h2 {
   font-size: 20px;
   font-weight: 700;
