@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 
-function readFileAsDataURL(file, maxPx = 160) {
+function readFileAsDataURL(file, maxPx = 300) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onerror = reject;
@@ -13,7 +13,7 @@ function readFileAsDataURL(file, maxPx = 160) {
         canvas.width = Math.round(img.width * scale);
         canvas.height = Math.round(img.height * scale);
         canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
-        resolve(canvas.toDataURL('image/jpeg', 0.82));
+        resolve(canvas.toDataURL('image/jpeg', 0.92));
       };
       img.src = e.target.result;
     };
