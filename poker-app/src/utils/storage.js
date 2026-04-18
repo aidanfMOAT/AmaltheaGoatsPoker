@@ -15,7 +15,15 @@ export function loadData() {
 }
 
 export function saveData(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch (e) {
+    if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
+      alert('Storage is full — some data may not have been saved. Try removing unused player logos.');
+    } else {
+      throw e;
+    }
+  }
 }
 
 export function generateId() {
